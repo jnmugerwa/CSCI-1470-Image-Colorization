@@ -54,6 +54,7 @@ class ColorizationModel(tf.keras.Model):
         self.model.add(Conv2D(filters=256, kernel_size=3, strides=1, padding="same", activation='relu'))
         self.model.add(Conv2D(filters=313, kernel_size=1, strides=1, padding="valid", activation='softmax'))
         
+        # I'm not sure if these are the correct layers?
         self.model.add(Conv2D(filters=2, kernel_size=1, strides=1, padding="valid", bias=False))
         self.model.add(UpSampling2D(size=(2, 2), interpolation='bilinear'))
         
