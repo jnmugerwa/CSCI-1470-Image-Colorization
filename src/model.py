@@ -16,7 +16,7 @@ class ColorizationModel(tf.keras.Model):
         self.l_norm = 100
         self.ab_norm = 110
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
-
+        self.mse = tf.keras.losses.MeanSquaredError()
         self.stdev = 0.04
 
         # TODO
@@ -104,10 +104,9 @@ class ColorizationModel(tf.keras.Model):
                                        kernel_initializer=kernel_init, activation='relu'))
         self.model.add(BatchNormalization())
 
-        # y_hat (convert num classes)
-        self.model.add(Conv2D(filters=self.num_classes, kernel_size=1, strides=1, dilation_rate=1, padding="same",
+        # y_hat
+        self.model.add(Conv2D(filters=2, kernel_size=1, strides=1, dilation_rate=1, padding="same",
                               kernel_initializer=kernel_init, activation='softmax'))
-        self.init_bin_to_ab_array()
         
 
     @tf.function
@@ -116,10 +115,10 @@ class ColorizationModel(tf.keras.Model):
         :param : ...
         :return ...
         """
-        # TODO
-        return self.unnormalize_ab(self.model(inputs))
+        return self.model(inputs)
         
 
+    # I don't think we need an accuracy function here since this isn't a classification problem?
     def accuracy_function(self):
         """
         """
@@ -130,20 +129,6 @@ class ColorizationModel(tf.keras.Model):
         """
         """
         # TODO
-
-        #Calculate the binomial distribution of labels
-        z = self.calculate_bin_distribution(labels)
+        loss = self.mse(labels, predictions).numpy()
+        
         num_imgs,h,w = predictions.shape[0],predictions.shape[1],predictions.shape[2]
-        blank
-    
-    def normalize_l(self, in_l):
-        return (in_l-self.l_cent)/self.l_norm
-
-    def unnormalize_l(self, in_l):
-        return in_l*self.l_norm + self.l_cent
-
-    def normalize_ab(self, in_ab):
-        return in_ab/self.ab_norm
-
-    def unnormalize_ab(self, in_ab):
-        return in_ab*self.ab_norm
