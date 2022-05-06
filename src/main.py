@@ -1,6 +1,6 @@
 from model import ColorizationModel
 from preprocess import preprocess
-
+import tensorflow as tf
 
 def train(model, X, Y):
     """
@@ -11,7 +11,25 @@ def train(model, X, Y):
     :return: None
     """
     # TODO
-    pass
+    
+    num_inputs = X.shape[0]
+    num_batches = num_inputs // (model.batch_size)
+
+    # training model on batches 
+    for i in range(num_batches): 
+        startindex = int(i * model.batch_size) 
+        endindex = int((i+1) * model.batch_size) 
+        input_batch = X[startindex:endindex] 
+        labels_batch = Y[startindex:endindex]
+          
+        # make sure to use tf.stack to stack the grayscale and ab channels 
+        with tf.GradientTape() as tape:
+            probs = model.call(input_batch)
+            probs = tf.stack(input_batch, probs)
+            loss = model.loss_function(probs, labels_batch)
+
+        gradients = tape.gradient(loss, model.trainable_variables)
+        model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
 
 def test(model, X, Y):

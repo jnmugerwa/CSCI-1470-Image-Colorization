@@ -12,6 +12,7 @@ class ColorizationModel(tf.keras.Model):
 
         #Hyperparameters
         self.learning_rate = 0.00001
+        self.batch_size = 40 #we can test different batch sizes
         self.l_cent = 50
         self.l_norm = 100
         self.ab_norm = 110
@@ -129,6 +130,6 @@ class ColorizationModel(tf.keras.Model):
         """
         """
         # TODO
-        loss = self.mse(labels, predictions).numpy()
+        loss = self.mse(labels, predictions)
         
-        num_imgs,h,w = predictions.shape[0],predictions.shape[1],predictions.shape[2]
+        # num_imgs,h,w = predictions.shape[0],predictions.shape[1],predictions.shape[2]
