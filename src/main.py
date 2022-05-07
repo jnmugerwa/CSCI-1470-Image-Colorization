@@ -16,12 +16,17 @@ def train(model, X, Y):
 
     num_inputs = X.shape[0]
     num_batches = num_inputs // (model.batch_size)
+    indices = list(range(num_inputs))
+    indices = tf.random.shuffle(indices)
+    tf.gather(X, indices)
+    tf.gather(Y, indices)
+    inputs = tf.image.random_flip_left_right(X)
 
     # training model on batches 
     for i in range(num_batches):
         startindex = int(i * model.batch_size)
         endindex = int((i + 1) * model.batch_size)
-        input_batch = X[startindex:endindex]
+        input_batch = inputs[startindex:endindex]
         labels_batch = Y[startindex:endindex]
 
         # make sure to use tf.stack to stack the grayscale and ab channels 
