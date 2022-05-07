@@ -1,4 +1,7 @@
+import numpy as np
 import tensorflow as tf
+from matplotlib import pyplot as plt
+from skimage import color
 
 from model import ColorizationModel
 from preprocess import preprocess
@@ -57,13 +60,17 @@ def test(model, X, Y):
     return None
 
 
-def visualize_results():
+def visualize_results(input, prediction):
     """
     Visualization of model prediction (e.g. input and prediction).
-    Probably easiest to use matplotlib.
+    :param input: Image with only one channel (L); a black and white image. Dims of (32, 32, 1)
+    :param prediction: Image with (a, b) channels; the color portion of the image. Dims of (32, 32, 2)
     :return: None
     """
-    pass
+    full_channel_img = np.concatenate((prediction, input), axis=2)
+    as_rgb = color.lab2rgb(full_channel_img)
+    plt.imshow(as_rgb)
+    plt.show()
 
 
 def main():
