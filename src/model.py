@@ -117,14 +117,6 @@ class ColorizationModel(tf.keras.Model):
         :return ...
         """
         return self.model(inputs)
-        
-
-    # I don't think we need an accuracy function here since this isn't a classification problem?
-    def accuracy_function(self):
-        """
-        """
-        # TODO
-        pass
 
     def loss_function(self,predictions,labels):
         """
