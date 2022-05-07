@@ -31,9 +31,15 @@ def train(model, X, Y):
 
         # make sure to use tf.stack to stack the grayscale and ab channels 
         with tf.GradientTape() as tape:
-            probs = model.call(input_batch)
-            probs = tf.stack(input_batch, probs)
-            loss = model.loss_function(probs, labels_batch)
+            # TODO: Remove or keep, if my changes are wrong
+            # probs = model.call(input_batch)
+            # probs = tf.stack(input_batch, probs)
+
+            # I believe that our problem can be posed as predicting the (a, b) channels given the L channel. So, we
+            # no longer need probabilities since we're doing regression.
+            predicted_ab_channels = model.call(input_batch)
+            true_ab_channels = labels_batch[:, :, :, 1:]
+            loss = model.loss_function(predicted_ab_channels, true_ab_channels)
 
         gradients = tape.gradient(loss, model.trainable_variables)
         model.optimizer.apply_gradients(zip(gradients, model.trainable_variables))

@@ -20,7 +20,6 @@ def preprocess():
     Y_train, Y_test = normalize(Y_train), normalize(Y_test)
     # Convert from RGB space to L*a*b color space (https://en.wikipedia.org/wiki/CIELAB_color_space)
     Y_train, Y_test = convertFromRgbToLab(Y_train), convertFromRgbToLab(Y_test)
-    print(Y_train.shape)
     # Remove (a, b) channels to create black-and-white images. These will be our domain with colored images as range.
     X_train, X_test = np.reshape(np.copy(Y_train)[:, :, :, 0], [len(Y_train), 32, 32, 1]), \
                       np.reshape(np.copy(Y_test)[:, :, :, 0], [len(Y_test), 32, 32, 1])
