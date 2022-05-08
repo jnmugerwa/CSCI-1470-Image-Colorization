@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
@@ -72,19 +74,27 @@ def visualize_results(input, prediction):
     plt.imshow(as_rgb)
     plt.show()
 
-
 def main():
     print("Running preprocessing...")
     X_train, X_test, Y_train, Y_test = preprocess()
     print("Preprocessing complete.")
 
     model = ColorizationModel()
+    checkpoint_dir = './tf_ckpts'
+    checkpoint = tf.train.Checkpoint(model=model)
+    manager = tf.train.CheckpointManager(checkpoint, checkpoint_dir, max_to_keep=3)
+    if manager.latest_checkpoint:
+        checkpoint.restore(manager.latest_checkpoint)
+        print("Restoring model from latest checkpoint.")
 
     # TODO
     # Train and Test Model for 20 epochs; 20 is arbitrary, change if necessary
-    num_epochs = 20
-    for _ in range(num_epochs):
+    num_epochs = 5
+    for epoch in range(num_epochs):
         train(model, X_train, Y_train)
+        print(f"Training epoch {epoch} completed")
+    save_path = manager.save()
+    print(f"Saved model after latest training run at: {save_path}")
 
     acc = test(model, X_test, Y_test)
     print(f"Accuracy of Colorization model: {acc}")

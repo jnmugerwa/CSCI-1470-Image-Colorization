@@ -124,8 +124,8 @@ class ColorizationModel(tf.keras.Model):
         :return The predicted (a, b) channels for each batch image. Dimensions of (batch_size, 32, 32, 2)
         """
         out = self.model(inputs)
-        print("DEBUG!")
-        print(out.shape)
+        # print("DEBUG!")
+        # print(out.shape)
         return out
 
     def loss_function(self, predictions, labels):
@@ -138,7 +138,7 @@ class ColorizationModel(tf.keras.Model):
         curr_time = timeit.default_timer()
         num_min_since_train_start = (curr_time - self.init_time) / 60
         # TODO: training takes a really, really long time with this current design
-        print(f"Time elapsed since training started: {num_min_since_train_start} minutes")
+        # print(f"Time elapsed since training started: {num_min_since_train_start} minutes")
         return loss
 
         # num_imgs,h,w = predictions.shape[0],predictions.shape[1],predictions.shape[2]
