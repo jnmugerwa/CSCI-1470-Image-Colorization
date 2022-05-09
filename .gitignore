@@ -1,3 +1,4 @@
 # Don't upload image data -- too large.
 cifar-10-batches-py/
 src/tf_ckpts/
+src/__pycache__/
