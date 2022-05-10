@@ -1,4 +1,3 @@
-# example of loading the cifar10 dataset
 import pickle
 
 import numpy as np
@@ -7,7 +6,7 @@ from skimage import color
 
 def preprocess():
     '''
-
+    Gathers CIFAR-10 data, preprocesses it, then returns in a form ready for training
     :return:
         X_train: Black-and-white images, in L*a*b space. Dimensions of (num_examples, 32, 32, 1)
         X_test: Black-and-white images, in L*a*b space. Dimensions of (num_labels, 32, 32, 1)
@@ -31,9 +30,9 @@ def convertFromRgbToLab(color_images):
 
 
 def normalize(X):
-    # convert from integers to floats
+    # Convert from integers to floats
     train_norm = X.astype('float32')
-    # normalize to range 0-1
+    # Normalize to range [0, 1]
     X_normalized = train_norm / 255.0
     return X_normalized
 
@@ -82,7 +81,3 @@ def load_cifar_10_data(data_dir="../cifar-10-batches-py"):
     cifar_test_data = np.rollaxis(cifar_test_data, 1, 4)
 
     return cifar_train_data, cifar_test_data
-
-
-if __name__ == "__main__":
-    pass
